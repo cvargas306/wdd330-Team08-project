@@ -1,3 +1,6 @@
+Randomized URL:
+https://681fb3399490e19462bf1a12--team08project.netlify.app/ 
+
 # BYU-Pathway Worldwide Online
 ## WDD 330 - Web Frontend Development II
 
