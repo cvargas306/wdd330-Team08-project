@@ -1,5 +1,11 @@
 import { getLocalStorage } from "./utils.mjs";
 
+// cart/index.js or main.js
+import { updateCartCount } from "../js/utils.mjs";
+
+document.addEventListener("DOMContentLoaded", updateCartCount);
+
+
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
