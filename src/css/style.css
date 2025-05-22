@@ -133,6 +133,20 @@ button {
 
 /* End cart icon styles */
 
+.cart-count-badge {
+  position: absolute;
+  top: 5px;
+  right: -8px;
+  background-color: #f0a868;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+  z-index: 10;
+  display: none; /* Hide by default */
+}
+
 .mission {
   position: absolute;
   top: 1rem;

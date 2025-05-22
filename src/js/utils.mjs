@@ -37,3 +37,19 @@ export function renderListWithTemplate(template, parentElement, list, position =
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
+
+export function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+    const count = cart.length;
+    const countElement = document.getElementById("cart-count");
+
+    if (count > 0) {
+        countElement.textContent = count;
+        countElement.style.display = "inline-block";
+    } else {
+        countElement.style.display = "none";
+    }
+}
+
+// Call on page load
+document.addEventListener("DOMContentLoaded", updateCartCount);
