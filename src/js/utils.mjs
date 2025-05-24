@@ -65,10 +65,16 @@ export async function loadHeaderFooter(){
   updateCartCount();
 }
 
+
 export function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+    const cart = getLocalStorage("so-cart") || [];
     const count = cart.length;
     const countElement = document.getElementById("cart-count");
+
+    if (!countElement) {
+        console.warn('Cart-count element not found in the DOM');
+        return;
+    }
 
     if (count > 0) {
         countElement.textContent = count;
