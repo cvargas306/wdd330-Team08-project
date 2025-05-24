@@ -1,7 +1,26 @@
 import { getLocalStorage, setLocalStorage, renderListWithTemplate, updateCartCount } from "./utils.mjs";
 
-function cartItemTemplate(item) {
-  return `<li class="cart-card divider">
+
+document.addEventListener("DOMContentLoaded", updateCartCount);
+export default class ShoppingCart {
+  constructor() {
+    this.cartItems = getLocalStorage("so-cart") || [];
+  }
+
+  init() {
+    this.renderCartContents();
+  }
+
+  renderCartContents() {
+    const cartListElement = document.querySelector(".product-list");
+    if (cartListElement) {
+      renderListWithTemplate(this.cartItemTemplate.bind(this), cartListElement, this.cartItems, "afterbegin", true);
+      this.addRemoveListeners();
+    }
+  }
+
+  cartItemTemplate(item) {
+    return `<li class="cart-card divider">
     <span class="remove-item" data-id="${item.Id}" style="float:right;cursor:pointer;color:red;font-weight:bold;">✖</span>
     <a href="#" class="cart-card__image">
       <img src="${item.Image}" alt="${item.Name}" />
@@ -13,34 +32,23 @@ function cartItemTemplate(item) {
     <p class="cart-card__quantity">qty: 1</p>
     <p class="cart-card__price">$${item.FinalPrice}</p>
   </li>`;
-}
-
-export default class ShoppingCart {
-  constructor(listElement) {
-    this.listElement = listElement;
-    this.cartItems = [];
-  }
-
-  init() {
-    this.cartItems = getLocalStorage("so-cart") || [];
-    this.renderList();
-  }
-
-  renderList() {
-    renderListWithTemplate(cartItemTemplate, this.listElement, this.cartItems);
-    this.addRemoveListeners();
   }
 
   addRemoveListeners() {
-    const removeButtons = document.querySelectorAll(".remove-item");
-    removeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const idToRemove = button.dataset.id;
-        this.cartItems = this.cartItems.filter((item) => item.Id !== idToRemove);
-        setLocalStorage("so-cart", this.cartItems);
-        updateCartCount(); 
-        this.renderList(); 
-      });
+    document.querySelectorAll(".remove-item").forEach(button => {
+      button.addEventListener("click", (e) => { e.preventDefault(); this.removeItem(e.target.dataset.id); });
     });
+  }
+
+  removeItem(id) {
+    // Filter item to delete
+    this.cartItems = this.cartItems.filter(item => item.Id !== id);
+
+    // Update localStorage
+    setLocalStorage("so-cart", this.cartItems);
+
+    this.renderCartContents();
+
+    document.dispatchEvent(new CustomEvent("cartUpdated"));
   }
 }
