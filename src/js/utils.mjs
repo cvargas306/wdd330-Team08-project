@@ -66,17 +66,22 @@ export async function loadHeaderFooter(){
 }
 
 export function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
-    const count = cart.length;
-    const countElement = document.getElementById("cart-count");
+  const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+  const count = cart.length;
+  const countElement = document.getElementById("cart-count");
 
-    if (count > 0) {
-        countElement.textContent = count;
-        countElement.style.display = "inline-block";
-    } else {
-        countElement.style.display = "none";
-    }
+  if (!countElement) {
+    console.warn("No Element found");
+    return;
+  }
+  if (count > 0) {
+
+    countElement.textContent = count;
+    countElement.style.display = "inline-block";
+  } else {
+    countElement.style.display = "none";
+  }
 }
 
 // Listens for custom 'cartUpdated' event to refresh the cart item count display
-document.addEventListener('cartUpdated', updateCartCount);
+document.addEventListener("cartUpdated", updateCartCount);

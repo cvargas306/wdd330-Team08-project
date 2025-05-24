@@ -1,9 +1,6 @@
-import { getParam } from "./utils.mjs";
+import { getParam, loadHeaderFooter, updateCartCount } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
-import { loadHeaderFooter } from "./utils.mjs";
-
-import { updateCartCount } from "../js/utils.mjs";
 
 loadHeaderFooter();
 document.addEventListener("DOMContentLoaded", updateCartCount);
