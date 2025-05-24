@@ -1,7 +1,10 @@
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
+import { loadHeaderFooter } from "../js/utils.mjs";
 
-// cart/index.js or main.js
+loadHeaderFooter();
+
+
 import { updateCartCount } from "../js/utils.mjs";
 
 document.addEventListener("DOMContentLoaded", updateCartCount);
