@@ -1,6 +1,8 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
-// cart/index.js or main.js
+import { loadHeaderFooter } from "../js/utils.mjs";
+
+loadHeaderFooter();
 import { updateCartCount } from "../js/utils.mjs";
 
 document.addEventListener("DOMContentLoaded", updateCartCount);
@@ -34,7 +36,7 @@ function addRemoveListeners() {
 
   removeButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      
+
       const idToRemove = button.dataset.id;
       let cartItems = getLocalStorage("so-cart") || [];
 

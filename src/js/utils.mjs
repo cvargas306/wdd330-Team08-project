@@ -38,17 +38,44 @@ export function renderListWithTemplate(template, parentElement, list, position =
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 
-export function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
-    const count = cart.length;
-    const countElement = document.getElementById("cart-count");
+export function renderWithTemplate(template, parentElement, data, callback) {
+  parentElement.innerHTML = template;
 
-    if (count > 0) {
-        countElement.textContent = count;
-        countElement.style.display = "inline-block";
-    } else {
-        countElement.style.display = "none";
-    }
+  if (callback) {
+    callback(data);
+  }
+
+}
+
+async function loadTemplate(path) {
+  const res = await fetch(path);
+  const template = await res.text();
+  return template;
+
+}
+
+export async function loadHeaderFooter() {
+  const headerTemplate = await loadTemplate("../partials/header.html");
+  const footerTemplate = await loadTemplate("../partials/footer.html");
+
+  const headerElement = document.querySelector("#main-header");
+  const footerElement = document.querySelector("#main-footer");
+
+  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(footerTemplate, footerElement);
+}
+
+export function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+  const count = cart.length;
+  const countElement = document.getElementById("cart-count");
+
+  if (count > 0) {
+    countElement.textContent = count;
+    countElement.style.display = "inline-block";
+  } else {
+    countElement.style.display = "none";
+  }
 }
 
 // Call on page load
