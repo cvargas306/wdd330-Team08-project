@@ -3,7 +3,7 @@ import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
 
 loadHeaderFooter();
-document.addEventListener("DOMContentLoaded", updateCartCount);
+updateCartCount();
 
 
 const dataSource = new ProductData("tents");

@@ -71,7 +71,7 @@ export function updateCartCount() {
   const countElement = document.getElementById("cart-count");
 
   if (!countElement) {
-    console.warn("No Element found");
+    //console.warn("No Element found");
     return;
   }
   if (count > 0) {
