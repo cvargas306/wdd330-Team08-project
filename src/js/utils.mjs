@@ -67,23 +67,22 @@ export async function loadHeaderFooter(){
 
 
 export function updateCartCount() {
-  document.addEventListener("DOMContentLoaded", () => {
-    const cart = getLocalStorage("so-cart") || [];
-    const count = cart.length;
-    const countElement = document.getElementById("cart-count");
+  
+  const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+  const count = cart.length;
+  const countElement = document.getElementById("cart-count");
 
-    if (!countElement) {
-      console.warn('Cart-count element not found in the DOM');
-      return;
-    }
+  if (!countElement) {
+    console.warn("No Element found");
+    return;
+  }
+  if (count > 0) {
 
-    if (count > 0) {
-      countElement.textContent = count;
-      countElement.style.display = "inline-block";
-    } else {
-      countElement.style.display = "none";
-    }
-  });
+    countElement.textContent = count;
+    countElement.style.display = "inline-block";
+  } else {
+    countElement.style.display = "none";
+  }
 }
 
 // Listens for custom 'cartUpdated' event to refresh the cart item count display
