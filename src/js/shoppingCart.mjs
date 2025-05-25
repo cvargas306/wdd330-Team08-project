@@ -12,9 +12,27 @@ export default class ShoppingCart {
 
   renderCartContents() {
     const cartListElement = document.querySelector(".product-list");
+    const cartFooter = document.querySelector(".cart-footer");
+
     if (cartListElement) {
-      renderListWithTemplate(this.cartItemTemplate.bind(this),cartListElement,this.cartItems,"afterbegin",true);
-      this.addRemoveListeners(); 
+      renderListWithTemplate(this.cartItemTemplate.bind(this), cartListElement, this.cartItems, "afterbegin", true);
+      this.addRemoveListeners();
+    }
+
+    if (this.cartItems.length > 0) {
+      const total = this.cartItems.reduce((sum, item) => {
+        const quantity = item.quantity || 1;
+        return sum + item.FinalPrice * quantity;
+      }, 0).toFixed(2);
+
+      if (cartFooter) {
+        cartFooter.classList.remove("hide");
+        cartFooter.querySelector(".cart-total").textContent = `Total: $${total}`;
+      }
+    } else {
+      if (cartFooter) {
+        cartFooter.classList.add("hide");
+      }
     }
   }
 
@@ -37,17 +55,17 @@ export default class ShoppingCart {
 
   addRemoveListeners() {
     document.querySelectorAll(".remove-item").forEach(button => {
-      button.addEventListener("click", (e) => {e.preventDefault();this.removeItem(e.target.dataset.id);});
+      button.addEventListener("click", (e) => { e.preventDefault(); this.removeItem(e.target.dataset.id); });
     });
   }
 
   removeItem(id) {
     // Filter item to delete
     this.cartItems = this.cartItems.filter(item => item.Id !== id);
-    
+
     // Update localStorage
     setLocalStorage("so-cart", this.cartItems);
-    
+
     this.renderCartContents();
   }
 }
