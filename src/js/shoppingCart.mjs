@@ -1,9 +1,13 @@
-import { getLocalStorage, setLocalStorage } from './utils.mjs';
+/*import { getLocalStorage, setLocalStorage, updateCartCount } from './utils.mjs';
 import { renderListWithTemplate } from './utils.mjs';
 
 export default class ShoppingCart {
   constructor() {
     this.cartItems = getLocalStorage('so-cart') || [];
+
+    this.renderCartContents = this.renderCartContents.bind(this);
+    this.cartItemTemplate = this.cartItemTemplate.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
 
   init() {
@@ -13,26 +17,15 @@ export default class ShoppingCart {
   renderCartContents() {
     const cartListElement = document.querySelector('.product-list');
     if (cartListElement) {
-      renderListWithTemplate(this.cartItemTemplate.bind(this),cartListElement,this.cartItems,'afterbegin',true );
-      this.addRemoveListeners(); 
+      renderListWithTemplate(
+        (item) => this.cartItemTemplate(item), 
+        cartListElement,
+        this.cartItems,
+        'afterbegin',
+        true
+      );
+      this.addRemoveListeners();
     }
-  }
-
-  cartItemTemplate(item) {
-    return `
-      <li class="cart-card divider">
-        <span class="remove-item" data-id="${item.Id}" style="float:right;cursor:pointer;color:red;font-weight:bold;">✖</span>
-        <a href="#" class="cart-card__image">
-          <img src="${item.Image}" alt="${item.Name}">
-        </a>
-        <a href="#">
-          <h2 class="card__name">${item.Name}</h2>
-        </a>
-        <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-        <p class="cart-card__quantity">qty: 1</p>
-        <p class="cart-card__price">$${item.FinalPrice}</p>
-      </li>
-    `;
   }
 
   addRemoveListeners() {
@@ -49,7 +42,61 @@ export default class ShoppingCart {
     setLocalStorage('so-cart', this.cartItems);
     
     this.renderCartContents();
+    updateCartCount();
     
-    document.dispatchEvent(new CustomEvent('cartUpdated'));
+  }
+}*/
+
+import { getLocalStorage, setLocalStorage } from './utils.mjs';
+
+export default class ShoppingCart {
+  constructor() {
+    this.cartItems = getLocalStorage('so-cart') || [];
+  }
+
+  init() {
+    this.showCart();
+  }
+
+  showCart() {
+    const cartElement = document.querySelector('.product-list');
+    if (!cartElement) return;
+
+    cartElement.innerHTML = '';
+
+    if (this.cartItems.length === 0) {
+      cartElement.innerHTML = '<li class="empty">Your cart is empty</li>';
+      return;
+    }
+
+    this.cartItems.forEach(item => {
+      cartElement.innerHTML += `
+        <li class="cart-item">
+          <span class="remove-x" data-id="${item.Id}">✖</span>
+          <img src="${item.Image || '/images/placeholder.jpg'}" alt="${item.Name}">
+          <div>
+            <h3>${item.Name}</h3>
+            <p>$${item.FinalPrice}</p>
+          </div>
+        </li>
+      `;
+    });
+
+    this.addRemoveEvents();
+  }
+
+  addRemoveEvents() {
+    document.querySelectorAll('.remove-x').forEach(x => {
+      x.addEventListener('click', (e) => {
+        const id = e.target.getAttribute('data-id');
+        this.removeItem(id);
+      });
+    });
+  }
+
+  removeItem(id) {
+    this.cartItems = this.cartItems.filter(item => item.Id !== id);
+    setLocalStorage('so-cart', this.cartItems);
+    this.showCart();
   }
 }
