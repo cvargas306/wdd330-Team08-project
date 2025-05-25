@@ -86,4 +86,4 @@ export function updateCartCount() {
 }
 
 // Listens for custom 'cartUpdated' event to refresh the cart item count display
-document.addEventListener('cartUpdated', updateCartCount);
+document.addEventListener("cartUpdated", updateCartCount);
