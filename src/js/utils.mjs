@@ -68,7 +68,10 @@ export async function loadHeaderFooter(){
 
 export function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
-  const count = cart.length;
+
+  // Sum all quantities (default to 1 if quantity property doesn't exist)
+  const count = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+  /*const count = cart.length;*/
   const countElement = document.getElementById("cart-count");
 
   if (!countElement) {
