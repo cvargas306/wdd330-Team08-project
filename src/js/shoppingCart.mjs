@@ -53,6 +53,6 @@ export default class ShoppingCart {
     this.renderCartContents();
     
     updateCartCount();
-    //document.dispatchEvent(new CustomEvent("cartUpdated"));
+    
   }
 }
