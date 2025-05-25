@@ -65,6 +65,7 @@ export async function loadHeaderFooter(){
   updateCartCount();
 }
 
+
 export function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
   const count = cart.length;
@@ -81,6 +82,7 @@ export function updateCartCount() {
   } else {
     countElement.style.display = "none";
   }
+
 }
 
 // Listens for custom 'cartUpdated' event to refresh the cart item count display

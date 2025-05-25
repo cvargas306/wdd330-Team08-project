@@ -49,7 +49,5 @@ export default class ShoppingCart {
     setLocalStorage('so-cart', this.cartItems);
     
     this.renderCartContents();
-    
-    document.dispatchEvent(new CustomEvent('cartUpdated'));
   }
 }
