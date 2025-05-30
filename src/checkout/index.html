@@ -1,19 +1,20 @@
 <!doctype html>
 
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sleep Outside | Checkout</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
 
-  <body>
-    <header class="divider" id="main-header"></header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleep Outside | Checkout</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
 
-    <main class="divider checkout">
-      <h2>Review & Place your Order</h2>
-      <form name = "checkout-form">
+<body>
+  <header class="divider" id="main-header"></header>
+
+  <main class="divider checkout">
+    <h2>Review & Place your Order</h2>
+    <form id="checkout-form" name="checkout-form">
       <fieldset>
         <legend>Customer Name</legend>
         <label for="first-name">First Name</label>
@@ -37,11 +38,11 @@
       <fieldset>
         <legend>Payment</legend>
         <label for="card-number">Credit Card Number</label>
-        <input type="text" id="card-number" required />
+        <input type="text" id="card-number" required value="1234123412341234" />
         <label for="expiration">Expiration Date</label>
-        <input type="text" id="expiration" placeholder="MM/YY" required />
+        <input type="text" id="expiration" placeholder="MM/YY" required value="12/30" />
         <label for="security-code">Security Code</label>
-        <input type="text" id="security-code" required />
+        <input type="text" id="security-code" required value="123" />
       </fieldset>
 
       <button type="submit">Checkout</button>
@@ -55,8 +56,9 @@
       <p>Shipping: $<span id="shipping">0.00</span></p>
       <p><strong>Total: $<span id="total">0.00</span></strong></p>
     </section>
-    </main>
+  </main>
 
-    <footer id="main-footer"></footer>
-  </body>
+  <footer id="main-footer"></footer>
+</body>
+
 </html>

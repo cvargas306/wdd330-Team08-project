@@ -1,5 +1,5 @@
 import { loadHeaderFooter } from "./utils.mjs";
-import {CheckoutProcess} from "./CheckoutProcess.mjs";
+import { CheckoutProcess } from "./CheckoutProcess.mjs";
 
 loadHeaderFooter();
 
@@ -17,15 +17,9 @@ document.querySelector("#checkout-form").addEventListener("submit", (e) => {
 
     const form = e.target;
     if (form.checkValidity()) {
-        // Everything is filled out — proceed with submission (e.g., save order, show thank you)
-        alert("Order submitted successfully!");
-        // You could also clear the cart here if needed
-        localStorage.removeItem("so-cart");
-        form.reset();
-        // Optionally redirect
-        // window.location.href = "/thankyou.html";
+        checkout.calculateOrderTotal(); // ensure totals are calculated
+        checkout.checkout(); // <-- actually send the POST request
     } else {
-        // Show built-in validation messages
         form.reportValidity();
     }
 });
