@@ -1,7 +1,5 @@
 <!doctype html>
-
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,32 +16,35 @@
     <form id="checkout-form" name="checkout-form">
       <fieldset>
         <legend>Customer Name</legend>
-        <label for="first-name">First Name</label>
-        <input type="text" id="first-name" required />
-        <label for="last-name">Last Name</label>
-        <input type="text" id="last-name" required />
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="fname" required /> <!-- Cambiado a fname -->
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lname" required /> <!-- Cambiado a lname -->
       </fieldset>
 
       <fieldset>
         <legend>Address</legend>
         <label for="street">Street Address</label>
-        <input type="text" id="street" required />
+        <input type="text" id="street" name="street" required />
         <label for="city">City</label>
-        <input type="text" id="city" required />
+        <input type="text" id="city" name="city" required />
         <label for="state">State</label>
-        <input type="text" id="state" required />
+        <input type="text" id="state" name="state" required />
         <label for="zip">Zip Code</label>
-        <input type="text" id="zip" required />
+        <input type="text" id="zip" name="zip" pattern="\d{5}" title="5 digit ZIP code" required />
       </fieldset>
 
       <fieldset>
         <legend>Payment</legend>
         <label for="card-number">Credit Card Number</label>
-        <input type="text" id="card-number" required value="1234123412341234" />
+        <input type="text" id="card-number" name="cardNumber" pattern="\d{16}" 
+               title="16 digit card number" required value="1234123412341234" /> <!-- name cambiado a cardNumber -->
         <label for="expiration">Expiration Date</label>
-        <input type="text" id="expiration" placeholder="MM/YY" required value="12/30" />
-        <label for="security-code">Security Code</label>
-        <input type="text" id="security-code" required value="123" />
+        <input type="text" id="expiration" name="expiration" placeholder="MM/YY" 
+               pattern="\d{2}/\d{2}" title="MM/YY format" required value="12/30" />
+        <label for="code">Security Code</label>
+        <input type="text" id="code" name="code" pattern="\d{3}" 
+               title="3 digit code" required value="123" /> <!-- Cambiado a code -->
       </fieldset>
 
       <button type="submit">Checkout</button>
@@ -52,14 +53,15 @@
     <section class="order-summary">
       <h3>Order Summary</h3>
       <p>Items: <span id="num-items">0</span></p>
-      <p>Subtotal: <span id="subtotal">0.00</span></p>
-      <p>Tax: <span id="tax">0.00</span></p>
-      <p>Shipping: <span id="shipping">0.00</span></p>
-      <p><strong>Total: <span id="total">0.00</span></strong></p>
+      <p>Subtotal: $<span id="subtotal">0.00</span></p>
+      <p>Tax: $<span id="tax">0.00</span></p>
+      <p>Shipping: $<span id="shipping">0.00</span></p>
+      <p><strong>Total: $<span id="total">0.00</span></strong></p>
     </section>
   </main>
 
-  <footer id="main-footer"></footer>
+  <footer id="main-footer">
+    
+  </footer>
 </body>
-
 </html>

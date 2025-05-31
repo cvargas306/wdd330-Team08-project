@@ -1,26 +1,46 @@
-import { loadHeaderFooter } from "./utils.mjs";
-import  CheckoutProcess  from "../js/CheckoutProcess.mjs";
+import { loadHeaderFooter, updateCartCount} from './utils.mjs';
+import CheckoutProcess from './CheckoutProcess.mjs';
 
 loadHeaderFooter();
 
 const checkout = new CheckoutProcess("so-cart", ".order-summary");
 checkout.init();
-checkout.calculateOrderTotal();
 
-// Recalculate totals after zip code is entered
 document.querySelector("#zip").addEventListener("blur", () => {
-    checkout.calculateOrderTotal();
+  checkout.calculateOrderTotal();
 });
 
-// Validate and submit checkout form
-document.querySelector("#checkout-form").addEventListener("submit", (e) => {
-    e.preventDefault();
+document.querySelector("#checkout-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const form = e.target;
-    if (form.checkValidity()) {
-        checkout.calculateOrderTotal(); // ensure totals are calculated
-        checkout.checkout(); // <-- actually send the POST request
-    } else {
-        form.reportValidity();
-    }
+  const form = e.target;
+  
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  try {
+    await checkout.checkout();
+    
+    // Clear cart and reset form
+    localStorage.removeItem("so-cart");
+    form.reset();
+    document.getElementById("card-number").value = '';
+    document.getElementById("expiration").value = '';
+    document.getElementById("code").value = '';
+    
+
+    document.querySelector("#num-items").textContent = "0";
+    document.querySelector("#subtotal").textContent = "0.00";
+    document.querySelector("#tax").textContent = "0.00";
+    document.querySelector("#shipping").textContent = "0.00";
+    document.querySelector("#total").textContent = "0.00";
+    
+    alert("Order completed successfully!");
+    updateCartCount(0);
+    
+  } catch (error) {
+    alert("Payment error: " + (error.message || "Please try again"));
+  }
 });

@@ -3,27 +3,27 @@ import ExternalServices from "./ExternalServices.mjs";
 
 const services = new ExternalServices();
 
-function formDataToJSON(formElement) {
-    // convert the form data to a JSON object
-    const formData = new FormData(formElement);
-    const convertedJSON = {};
-    formData.forEach((value, key) => {
-        convertedJSON[key] = value;
-    });
-    return convertedJSON;
+function formDataToJSON(form) {
+  // convert the form data to a JSON object
+  const formData = new FormData(form);
+  const convertedJSON = {};
+  formData.forEach((value, key) => {
+    convertedJSON[key] = value;
+  });
+  return convertedJSON;
 }
 
 function packageItems(items) {
-    const simplifiedItems = items.map((item) => {
-        console.log(item);
-        return {
-            id: item.Id,
-            price: item.FinalPrice,
-            name: item.Name,
-            quantity: 1,
-        };
-    });
-    return simplifiedItems;
+  const simplifiedItems = items.map((item) => {
+    console.log(item);
+    return {
+      id: item.Id,
+      price: item.FinalPrice,
+      name: item.Name,
+      quantity: 1,
+    };
+  });
+  return simplifiedItems;
 }
 
 export default class CheckoutProcess {
@@ -38,58 +38,68 @@ export default class CheckoutProcess {
     }
 
     init() {
-  this.list = getLocalStorage(this.key);
-  if (this.list && this.list.length > 0) {
-    this.calculateItemSubTotal();
-    this.calculateOrderTotal(); 
-  }
-}
+        this.list = getLocalStorage(this.key) || [];
+        if (this.list.length === 0) {
+            console.warn("El carrito está vacío");
+            return;
+        }
+        this.calculateItemSubTotal();
+        this.calculateOrderTotal();
+    }
 
     calculateItemSubTotal() {
-        this.itemTotal = this.list.reduce((total, item) => total + item.FinalPrice * (item.quantity || 1), 0);
+        this.itemTotal = parseFloat(this.list.reduce((total, item) => 
+            total + (item.FinalPrice * (item.quantity || 1)), 0).toFixed(2));
         this.displayItemTotal();
-
     }
 
     displayItemTotal() {
         const subtotal = document.querySelector(`${this.outputSelector} #subtotal`);
         const numItems = document.querySelector(`${this.outputSelector} #num-items`);
-        subtotal.innerText = `$${this.itemTotal.toFixed(2)}`;
-        numItems.innerText = this.list.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        subtotal.textContent = this.itemTotal.toFixed(2);
+        numItems.textContent = this.list.reduce((sum, item) => sum + (item.quantity || 1), 0);
     }
 
     calculateOrderTotal() {
         const numItems = this.list.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        this.tax = this.itemTotal * 0.06;
+        this.tax = parseFloat((this.itemTotal * 0.06).toFixed(2));
         this.shipping = 10 + (numItems > 1 ? (numItems - 1) * 2 : 0);
-        this.orderTotal = this.itemTotal + this.tax + this.shipping;
+        this.orderTotal = parseFloat((this.itemTotal + this.tax + this.shipping).toFixed(2));
         this.displayOrderTotals();
     }
 
     displayOrderTotals() {
-        document.querySelector(`${this.outputSelector} #tax`).innerText = `$${this.tax.toFixed(2)}`;
-        document.querySelector(`${this.outputSelector} #shipping`).innerText = `$${this.shipping.toFixed(2)}`;
-        document.querySelector(`${this.outputSelector} #total`).innerText = `$${this.orderTotal.toFixed(2)}`;
+        document.querySelector(`${this.outputSelector} #tax`).textContent = this.tax.toFixed(2);
+        document.querySelector(`${this.outputSelector} #shipping`).textContent = this.shipping.toFixed(2);
+        document.querySelector(`${this.outputSelector} #total`).textContent = this.orderTotal.toFixed(2);
     }
 
     async checkout() {
-        const formElement = document.forms["checkout-form"];
-        const order = formDataToJSON(formElement);
+        const form = document.forms['checkout-form'];
+        const order = {
+            fname: form.fname.value,
+            lname: form.lname.value,
+            street: form.street.value,
+            city: form.city.value,
+            state: form.state.value,
+            zip: form.zip.value,
+            cardNumber: form.cardNumber.value,
+            expiration: form.expiration.value,
+            code: form.code.value,
+            orderDate: new Date().toISOString(),
+            items: this.list.map(item => ({
+                id: item.Id,
+                name: item.Name,
+                price: item.FinalPrice,
+                quantity: item.quantity || 1
+            })),
+            orderTotal: this.orderTotal,
+            tax: this.tax,
+            shipping: this.shipping
+        };
 
-        order.orderDate = new Date().toISOString();
-        order.orderTotal = this.orderTotal;
-        order.tax = this.tax;
-        order.shipping = this.shipping;
-        order.items = packageItems(this.list);
-        //console.log(order);
-
-        try {
-            const response = await services.checkout(order);
-            console.log("Order Success",response);
-            alert("Order placed successfully");
-        } catch (err) {
-            console.error("Order Error", err);
-            alert("Something went wrong placing your order.");
-        }
+        const response = await services.checkout(order);
+        localStorage.removeItem("so-cart");
+        return response;
     }
 }
