@@ -38,10 +38,12 @@ export default class CheckoutProcess {
     }
 
     init() {
-        this.list = getLocalStorage(this.key);
-        this.calculateItemSubTotal();
-
-    }
+  this.list = getLocalStorage(this.key);
+  if (this.list && this.list.length > 0) {
+    this.calculateItemSubTotal();
+    this.calculateOrderTotal(); 
+  }
+}
 
     calculateItemSubTotal() {
         this.itemTotal = this.list.reduce((total, item) => total + item.FinalPrice * (item.quantity || 1), 0);

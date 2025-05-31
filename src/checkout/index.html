@@ -6,11 +6,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sleep Outside | Checkout</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script type="module" src="../js/checkout.js"></script>
 </head>
 
 <body>
-  <header class="divider" id="main-header"></header>
+  <header id="main-header" class="divider"></header>
 
   <main class="divider checkout">
     <h2>Review & Place your Order</h2>
@@ -50,11 +51,11 @@
 
     <section class="order-summary">
       <h3>Order Summary</h3>
-      <p>Items: <span id="num-items"></span></p>
-      <p>Subtotal: $<span id="subtotal">0.00</span></p>
-      <p>Tax: $<span id="tax">0.00</span></p>
-      <p>Shipping: $<span id="shipping">0.00</span></p>
-      <p><strong>Total: $<span id="total">0.00</span></strong></p>
+      <p>Items: <span id="num-items">0</span></p>
+      <p>Subtotal: <span id="subtotal">0.00</span></p>
+      <p>Tax: <span id="tax">0.00</span></p>
+      <p>Shipping: <span id="shipping">0.00</span></p>
+      <p><strong>Total: <span id="total">0.00</span></strong></p>
     </section>
   </main>
 

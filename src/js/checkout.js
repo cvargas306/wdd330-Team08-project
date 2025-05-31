@@ -1,10 +1,11 @@
 import { loadHeaderFooter } from "./utils.mjs";
-import { CheckoutProcess } from "./CheckoutProcess.mjs";
+import  CheckoutProcess  from "../js/CheckoutProcess.mjs";
 
 loadHeaderFooter();
 
 const checkout = new CheckoutProcess("so-cart", ".order-summary");
 checkout.init();
+checkout.calculateOrderTotal();
 
 // Recalculate totals after zip code is entered
 document.querySelector("#zip").addEventListener("blur", () => {
