@@ -76,30 +76,31 @@ export default class CheckoutProcess {
 
     async checkout() {
         const form = document.forms['checkout-form'];
-        const order = {
-            fname: form.fname.value,
-            lname: form.lname.value,
-            street: form.street.value,
-            city: form.city.value,
-            state: form.state.value,
-            zip: form.zip.value,
-            cardNumber: form.cardNumber.value,
-            expiration: form.expiration.value,
-            code: form.code.value,
-            orderDate: new Date().toISOString(),
-            items: this.list.map(item => ({
-                id: item.Id,
-                name: item.Name,
-                price: item.FinalPrice,
-                quantity: item.quantity || 1
-            })),
-            orderTotal: this.orderTotal,
-            tax: this.tax,
-            shipping: this.shipping
-        };
+        const order = formDataToJSON(form);
 
-        const response = await services.checkout(order);
-        localStorage.removeItem("so-cart");
-        return response;
+        order.orderDate = new Date();
+        order.orderTotal = this.orderTotal;
+        order.tax = this.tax;
+        order.shipping = this.shipping;
+        order.items = this.list.map(item => ({
+            id: item.Id,
+            name: item.Name,
+            price: item.FinalPrice,
+            quantity: item.quantity || 1
+        }));
+
+        console.log(order); 
+
+        try {
+            const response = await services.checkout(order);
+            console.log(response); 
+            localStorage.removeItem("so-cart");
+            window.location.assign("/checkout/success.html");
+        } catch (err) {
+            console.log(err);
+            if (err.message) {
+                alertMessage(err.message);
+            }
+        }
     }
 }
