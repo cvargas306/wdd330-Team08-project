@@ -1,4 +1,4 @@
-import { loadHeaderFooter, updateCartCount} from './utils.mjs';
+import { loadHeaderFooter } from './utils.mjs';
 import CheckoutProcess from './CheckoutProcess.mjs';
 
 loadHeaderFooter();
@@ -12,8 +12,13 @@ document.querySelector("#zip").addEventListener("blur", () => {
 
 document.querySelector("#checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
+  const myForm = document.forms[0];
+  const chk_status = myForm.checkValidity();
+  myForm.reportValidity();
+  if(chk_status)
+    checkout.checkout();
 
-  const form = e.target;
+ /* const form = e.target;
   
   if (!form.checkValidity()) {
     form.reportValidity();
@@ -42,5 +47,5 @@ document.querySelector("#checkout-form").addEventListener("submit", async (e) =>
     
   } catch (error) {
     alert("Payment error: " + (error.message || "Please try again"));
-  }
+  }*/
 });
