@@ -74,7 +74,7 @@ export default class CheckoutProcess {
         document.querySelector(`${this.outputSelector} #total`).textContent = this.orderTotal.toFixed(2);
     }
 
-    async checkout() {
+    /*async checkout() {
         const form = document.forms['checkout-form'];
         const order = {
             fname: form.fname.value,
@@ -101,5 +101,37 @@ export default class CheckoutProcess {
         const response = await services.checkout(order);
         localStorage.removeItem("so-cart");
         return response;
+    }*/
+    async checkout() {
+        const form = document.forms['checkout-form'];
+
+        // Convertir form data a JSON usando tu función existente
+        const order = formDataToJSON(form);
+
+        // Añadir detalles adicionales (como el profesor pero con tus nombres)
+        order.orderDate = new Date();
+        order.orderTotal = this.orderTotal;
+        order.tax = this.tax;
+        order.shipping = this.shipping;
+        order.items = this.list.map(item => ({
+            id: item.Id,
+            name: item.Name,
+            price: item.FinalPrice,
+            quantity: item.quantity || 1
+        }));
+
+        console.log(order); // Debugging como el profesor
+
+        try {
+            const response = await services.checkout(order);
+            console.log(response); // Debugging de respuesta
+            localStorage.removeItem("so-cart");
+            window.location.assign("/checkout/success.html");
+        } catch (err) {
+            console.log(err);
+            if (err.message) {
+                alertMessage(err.message);
+            }
+        }
     }
 }
