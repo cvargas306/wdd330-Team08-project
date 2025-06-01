@@ -1,7 +1,7 @@
 export function setBreadcrumbs(crumbs) {
   const container = document.querySelector("#breadcrumbs");
   if (!container) return;
-  container.innerHTML = ""; // Clear previous crumbs
+  container.innerHTML = ""; 
 
   crumbs.forEach((crumb, index) => {
     const li = document.createElement("li");
