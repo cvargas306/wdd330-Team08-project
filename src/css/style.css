@@ -343,3 +343,32 @@ footer {
   background-color: #f9f9f9;
 }
 
+.success-message {
+  max-width: 500px;
+  padding: 2rem;
+}
+
+.success-message h2 {
+  color: var(--tertiary-color);
+  margin-bottom: 1rem;
+}
+
+.success-message p {
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.7rem 1.5rem;
+  background-color: var(--dark-grey);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: var(--secondary-color);
+}

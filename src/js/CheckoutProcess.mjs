@@ -104,11 +104,8 @@ export default class CheckoutProcess {
     }*/
     async checkout() {
         const form = document.forms['checkout-form'];
-
-        // Convertir form data a JSON usando tu función existente
         const order = formDataToJSON(form);
 
-        // Añadir detalles adicionales (como el profesor pero con tus nombres)
         order.orderDate = new Date();
         order.orderTotal = this.orderTotal;
         order.tax = this.tax;
@@ -120,11 +117,11 @@ export default class CheckoutProcess {
             quantity: item.quantity || 1
         }));
 
-        console.log(order); // Debugging como el profesor
+        console.log(order); 
 
         try {
             const response = await services.checkout(order);
-            console.log(response); // Debugging de respuesta
+            console.log(response); 
             localStorage.removeItem("so-cart");
             window.location.assign("/checkout/success.html");
         } catch (err) {
