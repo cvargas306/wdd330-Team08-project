@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, animateCartIcon, updateCartCount } from "./utils.mjs";
 import { renderListWithTemplate } from "./utils.mjs";
 
 export default class ShoppingCart {
@@ -61,11 +61,23 @@ export default class ShoppingCart {
 
   removeItem(id) {
     // Filter item to delete
-    this.cartItems = this.cartItems.filter(item => item.Id !== id);
+    const itemIndex = this.cartItems.findIndex(item => item.Id === id);
 
-    // Update localStorage
-    setLocalStorage("so-cart", this.cartItems);
+    if (itemIndex !== -1) {
 
-    this.renderCartContents();
+      if (this.cartItems[itemIndex].quantity > 1) {
+        this.cartItems[itemIndex].quantity -= 1;
+      } else {
+
+        this.cartItems.splice(itemIndex, 1);
+      }
+
+      // Update localStorage
+      setLocalStorage("so-cart", this.cartItems);
+      animateCartIcon();
+      updateCartCount();
+
+      this.renderCartContents();
+    }
   }
 }

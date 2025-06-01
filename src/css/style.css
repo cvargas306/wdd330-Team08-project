@@ -274,7 +274,25 @@ button {
   grid-column: 3;
 }
 
-/* alert styles */
+/* cart animate */
+.cart-icon {
+  transition: all 0.3s ease;
+}
+
+.cart-icon-animate {
+  animation: cartBounce 0.6s ease;
+}
+
+@keyframes cartBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+
 /* alert styles */
 .alert {
   display: flex;

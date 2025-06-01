@@ -17,35 +17,4 @@ document.querySelector("#checkout-form").addEventListener("submit", async (e) =>
   myForm.reportValidity();
   if(chk_status)
     checkout.checkout();
-
- /* const form = e.target;
-  
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
-  }
-
-  try {
-    await checkout.checkout();
-    
-    // Clear cart and reset form
-    localStorage.removeItem("so-cart");
-    form.reset();
-    document.getElementById("card-number").value = '';
-    document.getElementById("expiration").value = '';
-    document.getElementById("code").value = '';
-    
-
-    document.querySelector("#num-items").textContent = "0";
-    document.querySelector("#subtotal").textContent = "0.00";
-    document.querySelector("#tax").textContent = "0.00";
-    document.querySelector("#shipping").textContent = "0.00";
-    document.querySelector("#total").textContent = "0.00";
-    
-    alert("Order completed successfully!");
-    updateCartCount(0);
-    
-  } catch (error) {
-    alert("Payment error: " + (error.message || "Please try again"));
-  }*/
 });

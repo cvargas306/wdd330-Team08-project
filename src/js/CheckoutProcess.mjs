@@ -74,34 +74,6 @@ export default class CheckoutProcess {
         document.querySelector(`${this.outputSelector} #total`).textContent = this.orderTotal.toFixed(2);
     }
 
-    /*async checkout() {
-        const form = document.forms['checkout-form'];
-        const order = {
-            fname: form.fname.value,
-            lname: form.lname.value,
-            street: form.street.value,
-            city: form.city.value,
-            state: form.state.value,
-            zip: form.zip.value,
-            cardNumber: form.cardNumber.value,
-            expiration: form.expiration.value,
-            code: form.code.value,
-            orderDate: new Date().toISOString(),
-            items: this.list.map(item => ({
-                id: item.Id,
-                name: item.Name,
-                price: item.FinalPrice,
-                quantity: item.quantity || 1
-            })),
-            orderTotal: this.orderTotal,
-            tax: this.tax,
-            shipping: this.shipping
-        };
-
-        const response = await services.checkout(order);
-        localStorage.removeItem("so-cart");
-        return response;
-    }*/
     async checkout() {
         const form = document.forms['checkout-form'];
         const order = formDataToJSON(form);
